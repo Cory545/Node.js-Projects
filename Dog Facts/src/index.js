@@ -18,14 +18,17 @@ app.get("/", (req, res) => {
 });
 
 app.get("/fact", async (req, res) => {
-
-    const response = await axios.get('https://www.fruityvice.com/api/fruit/1')
-    const fruitName = response.data.name;
-    const fruitNutritions = response.data.nutritions;
-    console.log(fruitNutritions)
-    console.log(fruitName);
-    res.render("index.ejs")
-});
+    try {
+      let randomNumber = Math.floor(Math.random() * 105) + 1;
+      const url = `https://www.fruityvice.com/api/fruit/${randomNumber}`;
+      const response = await axios.get(url);
+      const fruitName = response.data.name;
+      const fruitNutritions = response.data.nutritions;
+      res.render("fruitFact.ejs", { fruitName, fruitNutritions });
+    } catch (error) {
+      console.error("Error fetching fruit fact:", error);
+    }
+  });
 
 
 app.listen(port, () => {
